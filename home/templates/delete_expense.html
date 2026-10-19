@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Delete Expense | Finora{% endblock %}
+{% block content %}
+<div class="category-container">
+    <h1>Delete Expense</h1>
+    <p>
+        Are you sure you want to delete
+        <strong>{{ expense.description }}</strong>
+        (₹{{ expense.amount }})?
+    </p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Yes, Delete</button>
+        <a href="{% url 'expenses_list' %}">Cancel</a>
+    </form>
+</div>
+{% endblock content %}

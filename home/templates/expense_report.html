@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}Expense Report | Finora{% endblock %}
+{% block content %}
+<div class="dashboard">
+    <h1>Category-wise Expense Report</h1>
+    <p>See how your expenses are distributed across categories.</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Total Spent</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in report %}
+            <tr>
+                <td>{{ item.category__name|default:"Uncategorized" }}</td>
+                <td>₹{{ item.total|floatformat:2 }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2">No expenses available for your report.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'expenses_list' %}">View All Expenses</a>
+</div>
+<div class="chart-container">
+    <h2>Spending by Category</h2>
+    <canvas id="categoryChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const labels = JSON.parse('{{ chart_labels|escapejs }}');
+    const values = JSON.parse('{{ chart_values|escapejs }}');
+    const ctx = document.getElementById('categoryChart');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {labels: labels,datasets:[{label: 'Expenses',data: values}]},
+        options: {responsive: true,plugins:{legend:{position:'bottom'},
+                tooltip:{callbacks:{label:function(context){
+                            return context.label + ': ₹' +
+                                context.parsed.toFixed(2);
+                            }}}}}});
+</script>
+{% endblock content %}

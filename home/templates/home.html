@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finora | Smart Expense Tracker</title>
+    <style>        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'DM Sans', 'Segoe UI', Arial, sans-serif;
+            color: #F0F2F5;
+            background: radial-gradient(circle at 10% 15%, rgba(106, 0, 244, 0.18), transparent 35%), radial-gradient(circle at 90% 20%, rgba(57, 255, 136, 0.08), transparent 30%), #0B132B;
+            overflow-x: hidden;
+        }
+        .navbar {
+            width: 100%;
+            min-height: 78px;
+            padding: 15px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            background: rgba(11, 19, 43, 0.96);
+            border-bottom: 2px solid #6A00F4;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(16px);
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            color: #B6FF2E;
+            font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -0.7px;
+            text-decoration: none;
+        }
+        .logo-icon {
+            width: 43px;
+            height: 43px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 13px 13px 13px 4px;
+            color: #0B132B;
+            background: #B6FF2E;
+            font-size: 24px;
+            box-shadow: 0 0 22px rgba(182, 255, 46, 0.18);
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .logo:hover .logo-icon {
+            transform: rotate(-7deg) scale(1.06);
+            box-shadow: 0 0 30px rgba(182, 255, 46, 0.35);
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            position: relative;
+            color: #E8DEFF;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.25s;
+        }
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -7px;
+            width: 0;
+            height: 2px;
+            background: #39FF88;
+            transition: width 0.25s;
+        }
+        .nav-links a:hover {
+            color: #39FF88;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 21px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            text-align: center;
+            text-decoration: none;
+            border: 1px solid transparent;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+        }
+        .btn-login {
+            color: #E8DEFF;
+            border-color: #7A35FF;
+            background: rgba(106, 0, 244, 0.1);
+        }
+        .btn-login:hover {
+            color: #FFFFFF;
+            background: #6A00F4;
+            box-shadow: 0 0 22px rgba(106, 0, 244, 0.35);
+        }
+        .btn-register {
+            color: #0B132B;
+            background: #B6FF2E;
+            border-color: #B6FF2E;
+            box-shadow: 0 4px 15px rgba(182, 255, 46, 0.12);
+        }
+        .btn-register:hover {
+            background: #39FF88;
+            border-color: #39FF88;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(57, 255, 136, 0.2);
+        }
+        .hero {
+            position: relative;
+            min-height: 620px;
+            padding: 85px 7%;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            align-items: center;
+            gap: 55px;
+            background: radial-gradient(circle at 85% 25%, rgba(122, 53, 255, 0.17), transparent 35%), radial-gradient(circle at 60% 100%, rgba(57, 255, 136, 0.05), transparent 40%), transparent;
+        }
+        .hero-content {
+            max-width: 620px;
+            animation: fadeUp 0.8s ease both;
+        }
+        .hero-tag {
+            display: inline-block;
+            padding: 9px 15px;
+            border: 1px solid rgba(57, 255, 136, 0.35);
+            border-radius: 30px;
+            color: #39FF88;
+            background: rgba(57, 255, 136, 0.07);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.3px;
+        }
+        .hero h1 {
+            margin-top: 25px;
+            color: #FFFFFF;
+            font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+            font-size: clamp(38px, 5vw, 64px);
+            line-height: 1.1;
+            letter-spacing: -2.5px;
+        }
+        .hero h1 span {
+            color: #B6FF2E;
+            text-shadow: 0 0 28px rgba(182, 255, 46, 0.12);
+        }
+        .hero-content > p {
+            max-width: 520px;
+            margin-top: 22px;
+            color: #A9B4CE;
+            font-size: 16px;
+            line-height: 1.9;
+        }
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .hero-buttons .btn {
+            padding: 15px 25px;
+            font-size: 14px;
+        }
+        .hero-note {
+            margin-top: 22px;
+            color: #A9B4CE;
+            font-size: 12px;
+        }
+        .preview-wrapper {
+            position: relative;
+            animation: fadeUp 1s ease both;
+        }
+        .dashboard-preview {
+            padding: 26px;
+            border: 1px solid rgba(232, 222, 255, 0.17);
+            border-radius: 23px;
+            background: linear-gradient(145deg, #192747, #111C38);
+            box-shadow: 0 25px 65px rgba(0, 0, 0, 0.3), 0 0 40px rgba(106, 0, 244, 0.08);
+            transform: rotate(1deg);
+            transition: transform 0.3s;
+        }
+        .dashboard-preview:hover {
+            transform: rotate(0deg) translateY(-4px);
+        }
+        .preview-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+        .preview-top h3 {
+            color: #FFFFFF;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 17px;
+        }
+        .preview-badge {
+            padding: 7px 10px;
+            border-radius: 7px;
+            color: #39FF88;
+            background: rgba(57, 255, 136, 0.1);
+            border: 1px solid rgba(57, 255, 136, 0.2);
+            font-size: 10px;
+            font-weight: 700;
+        }
+        .balance-card {
+            margin-top: 25px;
+            padding: 25px;
+            border: 1px solid rgba(232, 222, 255, 0.15);
+            border-radius: 17px;
+            color: #FFFFFF;
+            background: linear-gradient(135deg, #4C0AC9, #6A00F4 55%, #7A35FF);
+            box-shadow: 0 12px 28px rgba(106, 0, 244, 0.2);
+        }
+        .balance-card p {
+            color: #E8DEFF;
+            font-size: 12px;
+        }
+        .balance-card h2 {
+            margin-top: 12px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 34px;
+            overflow-wrap: anywhere;
+        }
+        .balance-info {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 22px;
+            font-size: 11px;
+        }
+        .balance-info span {
+            color: #E8DEFF;
+        }
+        .preview-heading {
+            margin-top: 27px;
+            color: #FFFFFF;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 15px;
+        }
+        .transaction {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 18px;
+            padding: 11px;
+            border-radius: 12px;
+            transition: background 0.2s;
+        }
+        .transaction:hover {
+            background: rgba(232, 222, 255, 0.05);
+        }
+        .transaction-icon {
+            width: 43px;
+            height: 43px;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px;
+            background: rgba(182, 255, 46, 0.1);
+            color: #B6FF2E;
+            font-size: 19px;
+        }
+        .transaction-details {
+            flex: 1;
+            min-width: 0;
+        }
+        .transaction-details h4 {
+            color: #F0F2F5;
+            font-size: 12px;
+        }
+        .transaction-details p {
+            margin-top: 5px;
+            color: #A9B4CE;
+            font-size: 10px;
+        }
+        .transaction-amount {
+            color: #FFB7A5;
+            font-size: 12px;
+            font-weight: 800;
+        }
+        .features-section {
+            padding: 90px 7%;
+            background: #0D1731;
+            text-align: center;
+            border-top: 1px solid rgba(232, 222, 255, 0.07);
+            border-bottom: 1px solid rgba(232, 222, 255, 0.07);
+        }
+        .section-label {
+            color: #39FF88;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+        }
+        .section-title {
+            margin-top: 15px;
+            color: #FFFFFF;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(28px, 4vw, 42px);
+            letter-spacing: -1.2px;
+        }
+        .section-description {
+            max-width: 570px;
+            margin: 15px auto 0;
+            color: #A9B4CE;
+            font-size: 14px;
+            line-height: 1.9;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 25px;
+            margin-top: 50px;
+            text-align: left;
+        }
+        .feature-card {
+            position: relative;
+            overflow: hidden;
+            padding: 30px;
+            border: 1px solid rgba(232, 222, 255, 0.12);
+            border-radius: 18px;
+            background: linear-gradient(145deg, #192747, #111C38);
+            transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+        }
+        .feature-card::before {
+            content: "";
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            right: -55px;
+            top: -55px;
+            border-radius: 50%;
+            background: rgba(106, 0, 244, 0.16);
+            transition: transform 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-7px);
+            border-color: rgba(57, 255, 136, 0.35);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
+        }
+        .feature-card:hover::before {
+            transform: scale(1.5);
+        }
+        .feature-card .icon {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 15px;
+            background: rgba(106, 0, 244, 0.2);
+            border: 1px solid rgba(122, 53, 255, 0.3);
+            color: #B6FF2E;
+            font-size: 24px;
+        }
+        .feature-card h3 {
+            position: relative;
+            margin-top: 23px;
+            color: #FFFFFF;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 18px;
+        }
+        .feature-card p {
+            position: relative;
+            margin-top: 12px;
+            color: #A9B4CE;
+            font-size: 13px;
+            line-height: 1.9;
+        }
+        .how-section {
+            padding: 85px 7%;
+            background: #0B132B;
+            text-align: center;
+        }
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 30px;
+            margin-top: 45px;
+        }
+        .step-card {
+            padding: 28px 22px;
+            border: 1px solid rgba(232, 222, 255, 0.09);
+            border-radius: 17px;
+            background: rgba(25, 39, 71, 0.45);
+            transition: transform 0.25s, border-color 0.25s;
+        }
+        .step-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(182, 255, 46, 0.3);
+        }
+        .step-number {
+            width: 55px;
+            height: 55px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            border-radius: 17px;
+            color: #0B132B;
+            background: #B6FF2E;
+            box-shadow: 0 6px 22px rgba(182, 255, 46, 0.12);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+        }
+        .step-card h3 {
+            margin-top: 20px;
+            color: #FFFFFF;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 17px;
+        }
+        .step-card p {
+            margin-top: 12px;
+            color: #A9B4CE;
+            font-size: 13px;
+            line-height: 1.9;
+        }
+        .cta-section {
+            position: relative;
+            overflow: hidden;
+            margin: 70px 7%;
+            padding: 60px 25px;
+            border: 1px solid rgba(232, 222, 255, 0.2);
+            border-radius: 24px;
+            color: #FFFFFF;
+            background: radial-gradient(circle at 15% 15%, rgba(182, 255, 46, 0.1), transparent 30%), linear-gradient(135deg, #211052, #4C0AC9 60%, #6A00F4);
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        }
+        .cta-section h2 {
+            position: relative;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(27px, 4vw, 40px);
+            letter-spacing: -1px;
+        }
+        .cta-section p {
+            position: relative;
+            max-width: 620px;
+            margin: 15px auto 0;
+            color: #E8DEFF;
+            font-size: 14px;
+            line-height: 1.9;
+        }
+        .cta-section .btn {
+            position: relative;
+            margin-top: 25px;
+            color: #0B132B;
+            background: #B6FF2E;
+            border-color: #B6FF2E;
+        }
+        .cta-section .btn:hover {
+            background: #39FF88;
+            border-color: #39FF88;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(57, 255, 136, 0.2);
+        }
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 27px 7%;
+            border-top: 1px solid rgba(122, 53, 255, 0.35);
+            color: #A9B4CE;
+            background: #080F23;
+            font-size: 12px;
+        }
+        .footer strong {
+            color: #B6FF2E;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 16px;
+        }
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(22px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="{% url 'home' %}" class="logo">
+            <span class="logo-icon">₹</span>
+            <span>Finora</span>
+        </a>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+        </div>
+        <div class="nav-buttons">
+            <a href="{% url 'login' %}" class="btn btn-login">Login</a>
+            <a href="{% url 'register' %}" class="btn btn-register">Register</a>
+        </div>
+    </nav>
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <span class="hero-tag">SMARTER MONEY MANAGEMENT</span>
+            <h1>
+                Take control of your
+                <span>money.</span>
+            </h1>
+            <p>
+                Finora is your personal expense tracker. Record daily
+                spending, organize expenses by category, and understand
+                where your money goes — all in one simple place.
+            </p>
+            <div class="hero-buttons">
+                <a href="{% url 'register' %}" class="btn btn-register">
+                    Get Started Free →
+                </a>
+                <a href="{% url 'login' %}" class="btn btn-login">
+                    Login to Account
+                </a>
+            </div>
+            <p class="hero-note">
+                Simple expense tracking. Better financial habits.
+            </p>
+        </div>
+        <div class="preview-wrapper">
+            <div class="dashboard-preview">
+                <div class="preview-top">
+                    <h3>Spending Overview</h3>
+                    <span class="preview-badge">SAMPLE PREVIEW</span>
+                </div>
+                <div class="balance-card">
+                    <p>Total Expenses</p>
+                    <h2>₹12,450.00</h2>
+                    <div class="balance-info">
+                        <div>
+                            <span>Monthly overview</span>
+                            <p>This month</p>
+                        </div>
+                        <div>
+                            <span>Expense tracking</span>
+                            <p>Stay organized</p>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="preview-heading">Example Transactions</h3>
+                <div class="transaction">
+                    <div class="transaction-icon">🍽️</div>
+                    <div class="transaction-details">
+                        <h4>Food & Dining</h4>
+                        <p>Example transaction</p>
+                    </div>
+                    <div class="transaction-amount">− ₹450</div>
+                </div>
+                <div class="transaction">
+                    <div class="transaction-icon">🚗</div>
+                    <div class="transaction-details">
+                        <h4>Transportation</h4>
+                        <p>Example transaction</p>
+                    </div>
+                    <div class="transaction-amount">− ₹300</div>
+                </div>
+                <div class="transaction">
+                    <div class="transaction-icon">🛍️</div>
+                    <div class="transaction-details">
+                        <h4>Shopping</h4>
+                        <p>Example transaction</p>
+                    </div>
+                    <div class="transaction-amount">− ₹850</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="features-section" id="features">
+        <span class="section-label">WHAT FINORA OFFERS</span>
+        <h2 class="section-title">
+            Everything you need to track expenses
+        </h2>
+        <p class="section-description">
+            Keep your financial information organized with useful
+            tools designed to make everyday expense management easier.
+        </p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="icon">💳</div>
+                <h3>Expense Tracking</h3>
+                <p>
+                    Record how much you spend, add descriptions, and
+                    keep track of your daily purchases.
+                </p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">📂</div>
+                <h3>Categories</h3>
+                <p>
+                    Organize your expenses into categories such as food,
+                    travel, shopping, bills, and entertainment.
+                </p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">📊</div>
+                <h3>Spending Overview</h3>
+                <p>
+                    Review your recorded expenses and understand
+                    your spending patterns over time.
+                </p>
+            </div>
+        </div>
+    </section>
+    <section class="how-section" id="how-it-works">
+        <span class="section-label">GET STARTED IN THREE STEPS</span>
+        <h2 class="section-title">Managing expenses made simple</h2>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Create Your Account</h3>
+                <p>
+                    Register with your username, email address,
+                    and password.
+                </p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>Record Your Expenses</h3>
+                <p>
+                    Add your spending details, amounts, dates,
+                    and expense categories.
+                </p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Review Your Spending</h3>
+                <p>
+                    View your recorded transactions and understand
+                    where your money is going.
+                </p>
+            </div>
+        </div>
+    </section>
+    <section class="cta-section">
+        <h2>Ready to manage your money better?</h2>
+        <p>
+            Start recording your expenses and build better spending habits
+            with Finora.
+        </p>
+        <a href="{% url 'register' %}" class="btn">
+            Create Your Free Account →
+        </a>
+    </section>
+    <footer class="footer">
+        <strong>₹ Finora</strong>
+        <p>© 2026 Finora Expense Tracker. Your finances, your control.</p>
+    </footer>
+</body>
+</html>

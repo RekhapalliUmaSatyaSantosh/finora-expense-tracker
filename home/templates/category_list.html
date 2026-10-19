@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}My Categories | Finora{% endblock %}
+{% block content %}
+<div class="dashboard">
+    <h1>My Categories</h1>
+    <a href="{% url 'add_category' %}">+ Add Category</a>
+    {% if messages %}
+        {% for message in messages %}
+            <p class="message">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    <table>
+        <thead>
+            <tr>
+                <th>Category Name</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+            <tr>
+                <td>{{ category.name }}</td>
+                <td>{{ category.desc }}</td>
+                <td>
+                    <a href="{% url 'edit_category' %}?id={{ category.id }}">Edit</a>
+                    <a href="{% url 'delete_category' category.id %}"> Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No categories added yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

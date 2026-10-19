@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | Finora</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 16px;
+            font-family: 'Inter', sans-serif;
+            background:
+                radial-gradient(circle at top left, #2b1650, transparent 35%),
+                radial-gradient(circle at bottom right, #142b3d, transparent 35%),
+                #0B132B;
+            color: #E8DEFF;
+        }
+        .register-container {
+            width: 100%;
+            max-width: 1000px;
+        }
+        .register-card {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            overflow: hidden;
+            background: #111C38;
+            border: 1px solid rgba(232, 222, 255, 0.1);
+            border-radius: 24px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+            animation: slideUp 0.7s ease;
+        }
+        .brand-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 40px;
+            color: #ffffff;
+            background: linear-gradient(145deg, #160B2E, #3A087C, #6A00F4);
+            position: relative;
+            overflow: hidden;
+        }
+        .brand-panel::before {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border: 1px solid rgba(232, 222, 255, 0.18);
+            border-radius: 50%;
+            right: -180px;
+            top: 20%;
+        }
+        .brand-panel::after {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border: 1px solid rgba(232, 222, 255, 0.15);
+            border-radius: 50%;
+            right: -140px;
+            top: 27%;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 23px;
+            font-weight: 800;
+            position: relative;
+            z-index: 1;
+        }
+        .brand-icon {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 13px;
+            color: #0B132B;
+            background: #B6FF2E;
+            font-size: 25px;
+            font-weight: 800;
+        }
+        .brand-content {
+            margin: 55px 0;
+            position: relative;
+            z-index: 1;
+        }
+        .tagline {
+            display: inline-block;
+            padding: 9px 13px;
+            border: 1px solid rgba(232, 222, 255, 0.25);
+            border-radius: 30px;
+            color: #E8DEFF;
+            background: rgba(255, 255, 255, 0.08);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+        .brand-content h2 {
+            margin-top: 25px;
+            font-size: 43px;
+            line-height: 1.2;
+            letter-spacing: -1.8px;
+        }
+        .brand-content h2 span {
+            color: #B6FF2E;
+        }
+        .brand-content p {
+            margin-top: 20px;
+            color: #D5C9F5;
+            font-size: 13px;
+            line-height: 1.9;
+        }
+        .features {
+            display: grid;
+            gap: 18px;
+            margin-top: 32px;
+        }
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #E8DEFF;
+            font-size: 12px;
+        }
+        .feature-icon {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(232, 222, 255, 0.2);
+            border-radius: 9px;
+            color: #B6FF2E;
+            background: rgba(255, 255, 255, 0.04);
+        }
+        .brand-footer {
+            color: #C0B1E5;
+            font-size: 10px;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+        }
+        .form-panel {
+            padding: 45px 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #111C38;
+        }
+        .form-heading .eyebrow {
+            color: #B6FF2E;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+        }
+        .form-heading h1 {
+            margin-top: 12px;
+            color: #FFFFFF;
+            font-size: 31px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+        .form-heading p {
+            margin-top: 10px;
+            margin-bottom: 28px;
+            color: #A9B4CE;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+        .input-group {
+            margin-bottom: 19px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 9px;
+            color: #D9DFF0;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid #303C5C;
+            border-radius: 10px;
+            outline: none;
+            background: #0B132B;
+            color: #FFFFFF;
+            font-family: inherit;
+            font-size: 12px;
+            transition: 0.25s ease;
+        }
+        .input-group input::placeholder {
+            color: #7F8AA7;
+        }
+        .input-group input:focus {
+            border-color: #7A35FF;
+            background: #151D3A;
+            box-shadow: 0 0 0 4px rgba(122, 53, 255, 0.15);
+        }
+        .error-message {
+            margin-bottom: 17px;
+            padding: 12px 14px;
+            border-left: 3px solid #FF6B81;
+            border-radius: 7px;
+            background: rgba(255, 107, 129, 0.1);
+            color: #FF9BAA;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+        .register-button {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-top: 5px;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            color: #0B132B;
+            background: linear-gradient(110deg, #B6FF2E, #39FF88);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+        .register-button span {
+            font-size: 19px;
+            transition: transform 0.3s ease;
+        }
+        .register-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(57, 255, 136, 0.15);
+        }
+        .register-button:hover span {
+            transform: translateX(5px);
+        }
+        .login-link {
+            margin-top: 24px;
+            color: #A9B4CE;
+            text-align: center;
+            font-size: 11px;
+        }
+        .login-link a {
+            margin-left: 4px;
+            color: #B6FF2E;
+            font-weight: 800;
+            text-decoration: none;
+        }
+        .login-link a:hover {
+            color: #39FF88;
+            text-decoration: underline;
+        }
+        .security-note {
+            margin-top: 25px;
+            color: #7F8AA7;
+            text-align: center;
+            font-size: 10px;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="register-container">
+        <div class="register-card">
+            <section class="brand-panel">
+                <div class="brand">
+                    <div class="brand-icon">₹</div>
+                    <span>Finora</span>
+                </div>
+                <div class="brand-content">
+                    <div class="tagline">YOUR FINANCIAL JOURNEY</div>
+                    <h2>
+                        Make your money work
+                        <span>smarter.</span>
+                    </h2>
+                    <p>
+                        Track your spending, understand your habits,
+                        and take control of your financial future
+                        with one simple expense tracker.
+                    </p>
+                    <div class="features">
+                        <div class="feature">
+                            <div class="feature-icon">✓</div>
+                            Track all your expenses
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">↗</div>
+                            Understand your spending habits
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">₹</div>
+                            Build smarter financial habits
+                        </div>
+                    </div>
+                </div>
+                <div class="brand-footer">
+                    YOUR MONEY. YOUR GOALS. YOUR CONTROL.
+                </div>
+            </section>
+            <section class="form-panel">
+                <div class="form-heading">
+                    <span class="eyebrow">START FOR FREE</span>
+                    <h1>Create Account</h1>
+                    <p> Start your journey towards smarter spending. Enter your details below. </p>
+                </div>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <label for="un">Username</label>
+                        <input type="text" id="un" name="un" placeholder="Choose a username" autocomplete="username" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="mail">Email Address</label>
+                        <input type="email" id="mail" name="mail" placeholder="Enter your email address" autocomplete="email" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="pwd">Password</label>
+                        <input type="password" id="pwd" name="pwd" placeholder="Create a password" autocomplete="new-password" minlength="8" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="cpwd">Confirm Password</label>
+                        <input type="password" id="cpwd" name="cpwd" placeholder="Re-enter your password" autocomplete="new-password" minlength="8" required >
+                    </div>
+                    {% if error %}
+                        <p class="error-message">{{ error }}</p>
+                    {% endif %}
+                    <button type="submit" class="register-button">
+                        Create Account <span>→</span>
+                    </button>
+                </form>
+                <p class="login-link">
+                    Already have an account?
+                    <a href="{% url 'login' %}">Login</a>
+                </p>
+                <div class="security-note">Your finances, your control.</div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

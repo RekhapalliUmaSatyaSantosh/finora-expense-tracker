@@ -1,0 +1,50 @@
+ {% extends 'base.html' %}
+{% block title %}Monthly Expense Report | Finora{% endblock %}
+{% block content %}
+<div class="dashboard">
+    <h1>Monthly Expense Report</h1>
+    <p>Select a month and year to view your spending.</p>
+    <form method="GET" action="{% url 'monthly_expense_report' %}">
+        <label for="month">Month:</label>
+        <select name="month" id="month">
+            {% for number, name in months %}
+            <option value="{{ number }}"
+                {% if selected_month == number %}selected{% endif %}>
+                {{ name }}
+            </option>
+            {% endfor %}
+        </select>
+        <label for="year">Year:</label>
+        <select name="year" id="year">
+            {% for y in years %}
+            <option value="{{ y }}"
+                {% if selected_year == y %}selected{% endif %}>
+                {{ y }}
+            </option>
+            {% endfor %}
+        </select>
+        <button type="submit">View Report</button>
+    </form>
+    <h2>Total Expenses: ₹{{ total|floatformat:2 }}</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Total Spent</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in report %}
+            <tr>
+                <td>{{ item.category__name|default:"Uncategorized" }}</td>
+                <td>₹{{ item.total|floatformat:2 }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2">No expenses found for this month.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

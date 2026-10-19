@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Finora | Expense Tracker{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="{% url 'dashboard' %}" class="logo">
+            <span class="logo-icon">₹</span>
+            <span>Finora</span>
+        </a>
+        <div class="nav-links">
+            <a href="{% url 'expenses_list' %}">Expenses</a>
+            <a href="{% url 'category_list' %}">Categories</a>
+            <a href="{% url 'budget' %}">Budget Limit</a>
+            <a href="{% url 'income_list' %}">Income</a>
+            <a href="{% url 'expense_report' %}">Reports</a>
+            <a href="{% url 'monthly_expense_report' %}">Monthly Report</a>
+        </div>
+        <div class="nav-user">
+            {% if request.session.userid %}
+                <span class="welcome-text">
+                    Welcome, {{ request.session.username|default:"User" }}
+                </span>
+                <a href="{% url 'logout' %}" class="nav-btn logout-btn">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="nav-btn login-btn">Login</a>
+                <a href="{% url 'register' %}" class="nav-btn register-btn">Register
+                </a>
+            {% endif %}
+        </div>
+    </nav>
+    <main class="main-content">
+        {% block content %}
+        {% endblock content %}
+    </main>
+    <footer class="footer">
+        <p>© 2026 Finora. Your finances, your control.</p>
+        <p class="footer-tagline">
+            Track your expenses. Manage your money. Reach your goals.
+        </p>
+    </footer>
+</body>
+</html>

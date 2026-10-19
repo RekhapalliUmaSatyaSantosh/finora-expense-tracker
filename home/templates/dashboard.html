@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard | Finora{% endblock %}
+{% block content %}
+<div class="dashboard">
+    <h1>Welcome, {{ request.session.username }}! 👋</h1>
+    <p>Welcome to your expense tracker.</p>
+    <div class="dashboard-cards">
+        <div class="card">
+            <h3>Total Income</h3>
+            <h2>₹{{ total_income|floatformat:2 }}</h2>
+        </div>
+        <div class="card">
+            <h3>Total Expenses</h3>
+            <h2>₹{{ total_expenses|floatformat:2 }}</h2>
+        </div>
+        <div class="card">
+            <h3>Remaining Balance</h3>
+            <h2>₹{{ balance|floatformat:2 }}</h2>
+        </div>
+        <div class="card">
+            <h3>This Month</h3>
+            <h2>₹{{ monthly_expenses|floatformat:2 }}</h2>
+        </div>
+    </div>
+    <div class="dashboard-actions">
+        <a href="{% url 'add_expense' %}">+ Add Expense</a>
+        <a href="{% url 'add_category' %}">+ Add Category</a>
+        <a href="{% url 'add_income' %}">+ Add Income</a>
+    </div>
+</div>
+<div class="chart-container">
+    <h2>Monthly Expenses</h2>
+    <canvas id="expenseChart"></canvas>
+</div>
+{{ chart_labels|json_script:"chart-labels" }}
+{{ chart_values|json_script:"chart-values" }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const labels = JSON.parse(document.getElementById('chart-labels').textContent);
+    const values = JSON.parse(document.getElementById('chart-values').textContent);
+    const ctx = document.getElementById('expenseChart');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Expenses (₹)',
+                data: values,
+                backgroundColor: '#2f5d8a',
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {y: {beginAtZero: true,ticks: {callback: function(value) {return '₹' + value;}}}}}});});
+</script>
+
+{% endblock content %}

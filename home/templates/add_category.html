@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Add Category | Finora{% endblock %}
+{% block content %}
+<div class="category-container">
+    <h1>Add Category</h1>
+    <p>Create a category to organize your expenses.</p>
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <label for="name">Category Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter category name" required>
+        <label for="desc">Description</label>
+        <textarea name="desc" id="desc" rows="5" placeholder="Enter category description"></textarea>
+        <button type="submit">Add Category</button>
+    </form>
+</div>
+{% endblock content %}
